@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+
+  web:
+    build: ./
+    # volumes:
+    #   - ./web:/usr/src/app/web
+    env_file:
+      - ./web/.env
+    # command: python manage.py run -h 0.0.0.0
+    ports:
+      - 5000:5000
+    networks:
+      - web_network
+    # entrypoint: enterypoint.sh
+
+  db:
+    image: postgres:14-bullseye
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=electricity_board
+      - POSTGRES_PASSWORD=electricity_board
+      - POSTGRES_db=electricity_board
+    networks:
+      - web_network
+
+volumes:
+  postgres_data:
+
+networks:
+  web_network:
+    name: electricity_board
+    driver: bridge
